@@ -86,7 +86,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
             font-size:28px;
-            opacity:0.05;
+            opacity:0.07;
             z-index: -1; /* 关键层级：草莓永远在数字下面 */
         }
         
@@ -263,13 +263,13 @@
                 const numStrawberryBox = document.getElementById('numStrawberryBox');
 
                 if (todayDate > yearEndDate) {
-                    textEl.innerText = `✅ 本年度2月28日已过，静待来年`;
+                    textEl.innerText = `✅ 本年度2月28日已过，静待来年的小💰💰`;
                     countEl.innerText = "";
                 } else if (todayDate.toDateString() === yearEndDate.toDateString()) {
-                    textEl.innerText = `✨ 今天就是${currentYear}年2月28日，年终节点快乐`;
+                    textEl.innerText = `✨ 今天就是${currentYear}年2月28日，💰年终奖到账啦`;
                     countEl.innerText = "";
                 } else {
-                    textEl.innerText = `⏰ 距离${currentYear}年2月28日还有 `;
+                    textEl.innerText = `⏰ 距离发年终💰还有 `;
                     countEl.innerText = daysLeft;
 
                     // ✅ 动效频率严格 4000ms = 4秒一次，无任何改动
