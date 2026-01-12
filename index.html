@@ -104,7 +104,7 @@
             listEl.innerHTML = '';
             festivals.forEach(fes => {
                 const festivalDate = new Date(today.getFullYear(), fes.month - 1, fes.day);
-                let daysText = festivalDate > today ? `还有 ${getDaysDiff(today, festivalDate)} 天` : (festivalDate.toDateString() === today.toDateString() ? "今天就是节日！要开心啊🎇" : `已经渡过${fes.name}`，开不开心都过去吧);
+                let daysText = festivalDate > today ? `还有 ${getDaysDiff(today, festivalDate)} 天` : (festivalDate.toDateString() === today.toDateString() ? "今天就是节日！要开心啊🎇" : `已经渡过${fes.name}`，开不开心都过去啦);
                 let cssClass = festivalDate > today ? "not-yet" : (festivalDate.toDateString() === today.toDateString() ? "today" : "passed");
                 const li = document.createElement('li');
                 li.innerHTML = `<span class="name">${fes.emoji} ${fes.name}</span><span class="days ${cssClass}">${daysText}</span>`;
@@ -123,3 +123,4 @@
 </html>
 
     
+
