@@ -4,198 +4,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>休息办2026节假日倒计时</title>
+    <title>休息办2026法定节假日倒计时</title>
     <style>
-        /* 基础样式重置 完全原版 */
         * {margin:0;padding:0;box-sizing:border-box;font-family:"Microsoft YaHei",sans-serif;}
-        body {background-color:#f5f7fa;padding:20px;}
-        
-        /* 主容器 完全原版样式 电脑端不变 */
-        .container {
-            max-width:600px;
-            margin:0 auto;
-            background-color:white;
-            padding:30px;
-            border-radius:12px;
-            box-shadow:0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        /* 头部标题 完全原版 */
-        .header {
-            text-align:center;
-            margin-bottom:20px;
-            padding-bottom:15px;
-            border-bottom:2px solid #f0f0f0;
-        }
+        body {background-color:#f5f7fa;padding:20px;position: relative;min-height: 100vh;z-index: 1;}
+        .container {max-width:600px;margin:0 auto;background-color:white;padding:30px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,0.1);position: relative;z-index: 10;display: block !important;}
+        .header {text-align:center;margin-bottom:20px;padding-bottom:15px;border-bottom:2px solid #f0f0f0;}
         .header h1 {color:#e63946;font-size:24px;margin-bottom:5px;}
         .header .date {color:#666;font-size:14px;}
-        
-        /* 年终倒计时模块：粉色系 */
         .year-end {margin:20px 0;}
-        .year-end h2 {
-            color:#ff8fab; /* 粉色标题 */
-            font-size:18px;
-            margin-bottom:10px;
-            display:flex;
-            align-items:center;
-            gap:8px;
-        }
-        .year-end .item {
-            padding:15px;
-            background-color:#fff5f7; /* 淡粉色背景 */
-            border:1px solid #ffd1dc; /* 粉色边框 */
-            border-radius:12px;
-            margin-bottom:8px;
-            font-size:16px;
-            color:#333;
-            position:relative;
-            overflow:hidden;
-        }
-        
-        /* ✅ 保留 右下角草莓背景装饰 */
-        .strawberry-icon {
-            position:absolute;
-            bottom:-10px;
-            right:-10px;
-            font-size:40px;
-            opacity:0.2;
-            transform:rotate(15deg);
-            z-index:0;
-        }
-        
-        /* 数字容器：确保“天”字是黑色的 */
-        .count-wrapper {
-            display:inline-flex;
-            align-items:center;
-            position:relative;
-            z-index:1;
-        }
-        
-        /* ✅ 核心修正：数字+草莓 重叠容器 - 草莓在【数字下一层】，居中贴合，不偏移、不包裹 */
-        .num-strawberry-box {
-            display:inline-block;
-            position:relative;
-            margin-right:4px;
-            line-height: 1;
-        }
-        
-        /* ✅ 完美效果：草莓在数字【下一层/背景层】，居中重叠，淡淡背景，不遮挡数字，不偏移 */
-        .num-strawberry {
-            position:absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size:28px;
-            opacity:0.07;
-            z-index: -1; /* 关键层级：草莓永远在数字下面 */
-        }
-        
-        /* ✅ 倒计时数字样式：粉色、加粗、放大，无任何改动 */
-        .count-number {
-            color:#ff5c8d;
-            font-weight:bold;
-            font-size:22px;
-            line-height:1;
-            position:relative;
-            z-index: 1; /* 关键层级：数字永远在草莓上面 */
-        }
-        
-        /* ✅ “天”字样式：纯黑色、不加粗，无任何颜色/样式改动 */
-        .count-text {
-            color:#333;
-            font-size:16px;
-            font-weight:normal;
-        }
-        
-        /* ✅ 呼吸动画：缩放效果 不变，数字+草莓同步动 */
-        @keyframes breathe {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.3); }
-            100% { transform: scale(1); }
-        }
-        
-        /* ✅ 动画类 不变 */
-        .breathe-animation {
-            animation: breathe 1.5s ease-in-out;
-        }
-        
-        /* 近期提醒模块 完全原版 */
+        .year-end h2 {color:#ff8fab;font-size:18px;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+        .year-end .item {padding:15px;background-color:#fff5f7;border:1px solid #ffd1dc;border-radius:12px;margin-bottom:8px;font-size:16px;color:#333;position:relative;overflow:hidden;}
+        .strawberry-icon {position:absolute;bottom:-10px;right:-10px;font-size:40px;opacity:0.2;transform:rotate(15deg);z-index:0;}
+        .count-wrapper {display:inline-flex;align-items:center;position:relative;z-index:1;}
+        .num-strawberry-box {display:inline-block;position:relative;margin-right:4px;line-height: 1;}
+        .num-strawberry {position:absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);font-size:28px;opacity:0.07;z-index: -1;}
+        .count-number {color:#ff5c8d;font-weight:bold;font-size:22px;line-height:1;position:relative;z-index: 1;}
+        .count-text {color:#333;font-size:16px;font-weight:normal;}
+        @keyframes breathe {0% { transform: scale(1); }50% { transform: scale(1.3); }100% { transform: scale(1); }}
+        .breathe-animation {animation: breathe 1.5s ease-in-out;}
         .reminder {margin:20px 0;}
-        .reminder h2 {
-            color:#2a9d8f;
-            font-size:18px;
-            margin-bottom:10px;
-            display:flex;
-            align-items:center;
-            gap:8px;
-        }
-        .reminder .item {
-            padding:10px;
-            background-color:#f8f9fa;
-            border-radius:8px;
-            margin-bottom:8px;
-            font-size:16px;
-            color:#333;
-        }
-        
-        /* 节假日列表模块 完全原版 */
+        .reminder h2 {color:#2a9d8f;font-size:18px;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+        .reminder .item {padding:10px;background-color:#f8f9fa;border-radius:8px;margin-bottom:8px;font-size:16px;color:#333;}
         .festivals {margin:20px 0;}
-        .festivals h2 {
-            color:#e9c46a;
-            font-size:18px;
-            margin-bottom:10px;
-            display:flex;
-            align-items:center;
-            gap:8px;
-        }
+        .festivals h2 {color:#e9c46a;font-size:18px;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
         .festival-list {list-style:none;}
-        .festival-list li {
-            padding:10px;
-            background-color:#f8f9fa;
-            border-radius:8px;
-            margin-bottom:6px;
-            font-size:15px;
-            color:#333;
-            display:flex;
-            justify-content:space-between;
-        }
+        .festival-list li {padding:10px;background-color:#f8f9fa;border-radius:8px;margin-bottom:6px;font-size:15px;color:#333;display:flex;justify-content:space-between;}
         .festival-list li .name {font-weight:500;}
         .festival-list li .days {font-weight:bold;}
-        
-        /* 倒计时状态颜色 完全原版 */
         .days.not-yet {color:#e63946;}
         .days.today {color:#2a9d8f;}
         .days.passed {color:#666;}
-        
-        /* 底部提示 完全原版 */
-        .tips {
-            marginTop:20px;
-            padding:15px;
-            background-color:#fff8e1;
-            border-radius:8px;
-            text-align:center;
-            color:#ff9800;
-            font-size:14px;
-        }
-        
-        /* 手机端适配 完全原版 */
+        .tips {margin-top:20px;padding:15px;background-color:#fff5f7;border-radius:8px;text-align:center;color:#ff9800;font-size:14px;}
         @media screen and (max-width: 767px) {
             body { padding: 10px !important; }
             .container { padding: 15px !important; max-width: 100% !important; }
             .festival-list li { align-items: center; flex-wrap: wrap; gap: 6px; }
-            * { box-sizing: border-box; }
         }
+        #fireworks-layer {position: fixed;top: 0;left: 0;width: 100vw;height: 100vh;pointer-events: none;z-index: 9999;visibility: hidden;opacity: 0;transition: all 0.4s ease;background: transparent !important;}
+        .vacation-text {font-size: 80px;font-weight: bold;letter-spacing: 30px;padding-left: 30px;color: rgba(255, 100, 150, 0.85);text-shadow: 0 0 18px rgba(255, 150, 180, 0.6), 0 0 30px rgba(255, 100, 150, 0.4);position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);z-index: 1;}
+        #fireworks-canvas {position: absolute;top: 0;left: 0;width: 100%;height: 100%;background: transparent;}
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- 头部 -->
         <div class="header">
             <h1>🐟️ 休息办 重要通知 🐟️</h1>
             <div class="date" id="currentDate"></div>
         </div>
 
-        <!-- 年终倒计时模块（🎀标题 + 草莓在数字底层 + 右下角草莓 + 3秒同步动效） -->
+        <!-- 年终倒计时模块 新增【发工资倒计时】一行 -->
         <div class="year-end">
             <h2>🎀 年终倒计时（至当年2月28日）</h2>
             <div class="item" id="yearEndTip">
@@ -209,33 +67,50 @@
                 </span>
                 <span class="strawberry-icon">🍓</span>
             </div>
+            <!-- ✅ 新增：本月发工资倒计时 样式和原模块一致 -->
+            <div class="item" id="salaryTip">
+                <span id="salaryText"></span>
+                <span class="count-wrapper">
+                    <span class="num-strawberry-box" id="salaryNumBox">
+                        <span class="count-number" id="salaryCount"></span>
+                        <span class="num-strawberry">💰</span>
+                    </span>
+                    <span class="count-text">天</span>
+                </span>
+                <span class="strawberry-icon">💰</span>
+            </div>
         </div>
 
-        <!-- 近期时间提醒 -->
         <div class="reminder">
             <h2>📅 近期时间提醒</h2>
             <div class="item" id="weekendTip"></div>
             <div class="item" id="monthEndTip"></div>
         </div>
 
-        <!-- 2026节假日倒计时 -->
         <div class="festivals">
-            <h2>🎊 2026年节假日倒计时</h2>
+            <h2>🎊 2026法定节假日倒计时</h2>
             <ul class="festival-list" id="festivalList"></ul>
         </div>
 
-        <!-- 底部温馨提示 -->
         <div class="tips">
             休息办温馨提示：合理休息，高效打工，节日就在前方，坚持就是胜利😜
         </div>
     </div>
 
+    <div id="fireworks-layer">
+        <canvas id="fireworks-canvas"></canvas>
+        <div class="vacation-text">放假啦</div>
+    </div>
+
     <script>
         window.onload = function() {
-            const festivals = [{name:"2026年元旦",month:1,day:1,emoji:"🎆"},{name:"2026年春节",month:2,day:17,emoji:"🧧"},{name:"2026年清明节",month:4,day:5,emoji:"🌿"},{name:"2026年劳动节",month:5,day:1,emoji:"🏗️"},{name:"2026年端午节",month:6,day:19,emoji:"🍙"},{name:"2026年中秋节",month:9,day:25,emoji:"🥮"},{name:"2026年国庆节",month:10,day:1,emoji:"🚩"}];
+            const festivals = [{name:"2026年元旦假期",startM:1,startD:1,endM:1,endD:3,emoji:"🎆"},{name:"2026年春节假期",startM:2,startD:15,endM:2,endD:23,emoji:"🧧"},{name:"2026年清明节假期",startM:4,startD:4,endM:4,endD:6,emoji:"🌿"},{name:"2026年劳动节假期",startM:5,startD:1,endM:5,endD:5,emoji:"🏗️"},{name:"2026年端午节假期",startM:6,startD:19,endM:6,endD:21,emoji:"🍙"},{name:"2026年中秋节假期",startM:9,startD:25,endM:9,endD:25,emoji:"🥮"},{name:"2026年国庆节假期",startM:10,startD:1,endM:10,endD:7,emoji:"🚩"}];
             const today = new Date();
+            const todayYear = today.getFullYear();
+            const todayMonth = today.getMonth() + 1;
+            const todayDay = today.getDate();
+            const todayDateObj = new Date(todayYear, todayMonth - 1, todayDay);
 
-            // 计算天数差
             function getDaysDiff(date1, date2) {
                 const d1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
                 const d2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
@@ -243,7 +118,13 @@
                 return Math.floor(Math.abs(d1 - d2) / oneDayMs);
             }
 
-            // 渲染当前日期
+            renderCurrentDate();
+            renderYearEndTip();
+            renderSalaryTip(); // ✅ 执行发工资倒计时渲染
+            renderWeekendTip();
+            renderMonthEndTip();
+            renderFestivals();
+
             function renderCurrentDate() {
                 const year = today.getFullYear();
                 const month = String(today.getMonth() + 1).padStart(2, '0');
@@ -251,17 +132,14 @@
                 document.getElementById('currentDate').innerText = `今日日期：${year}年${month}月${day}日`;
             }
 
-            // 渲染年终倒计时 ✅ 严格3秒一次动效 不变
             function renderYearEndTip() {
                 const currentYear = today.getFullYear();
-                const yearEndDate = new Date(currentYear, 1, 28); // 固定2月28日
+                const yearEndDate = new Date(currentYear, 1, 28);
                 const todayDate = new Date(currentYear, today.getMonth(), today.getDate());
                 const daysLeft = getDaysDiff(today, yearEndDate);
-
                 const textEl = document.getElementById('yearEndText');
                 const countEl = document.getElementById('yearEndCount');
                 const numStrawberryBox = document.getElementById('numStrawberryBox');
-
                 if (todayDate > yearEndDate) {
                     textEl.innerText = `✅ 本年度2月28日已过，静待来年的小💰💰`;
                     countEl.innerText = "";
@@ -271,8 +149,6 @@
                 } else {
                     textEl.innerText = `⏰ 距离发年终💰还有 `;
                     countEl.innerText = daysLeft;
-
-                    // ✅ 动效频率严格 4000ms = 4秒一次，无任何改动
                     setInterval(() => {
                         numStrawberryBox.classList.remove('breathe-animation');
                         void numStrawberryBox.offsetWidth; 
@@ -281,7 +157,40 @@
                 }
             }
 
-            // 渲染周末提醒
+            // ✅ ✅ 核心新增：计算【每月最后一个工作日】+ 渲染发工资倒计时
+            function getLastWorkdayOfMonth(year, month) {
+                // 获取当月最后一天
+                let lastDay = new Date(year, month, 0);
+                let day = lastDay.getDay();
+                // 规则：周日(0)→往前推2天到周五，周六(6)→往前推1天到周五，工作日不变
+                if (day === 0) {
+                    lastDay.setDate(lastDay.getDate() - 2);
+                } else if (day === 6) {
+                    lastDay.setDate(lastDay.getDate() - 1);
+                }
+                return lastDay;
+            }
+            function renderSalaryTip() {
+                const salaryDate = getLastWorkdayOfMonth(todayYear, todayMonth);
+                const daysLeft = getDaysDiff(todayDateObj, salaryDate);
+                const textEl = document.getElementById('salaryText');
+                const countEl = document.getElementById('salaryCount');
+                const numBox = document.getElementById('salaryNumBox');
+                if (todayDateObj.toDateString() === salaryDate.toDateString()) {
+                    textEl.innerText = `🎉 今天发工资啦！开心暴富 🎉`;
+                    countEl.innerText = "";
+                } else {
+                    textEl.innerText = `💵 距离本月发工资还有 `;
+                    countEl.innerText = daysLeft;
+                    // 同年终奖的呼吸动画效果
+                    setInterval(() => {
+                        numBox.classList.remove('breathe-animation');
+                        void numBox.offsetWidth; 
+                        numBox.classList.add('breathe-animation');
+                    }, 4000);
+                }
+            }
+
             function renderWeekendTip() {
                 const weekday = today.getDay();
                 let tipText = "";
@@ -296,56 +205,98 @@
                 document.getElementById('weekendTip').innerText = tipText;
             }
 
-            // 渲染本月结束倒计时
             function renderMonthEndTip() {
-                const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
-                const lastDate = new Date(today.getFullYear(), today.getMonth(), lastDayOfMonth);
-                const daysLeft = getDaysDiff(today, lastDate);
+                const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+                const daysLeft = getDaysDiff(today, lastDayOfMonth);
                 document.getElementById('monthEndTip').innerText = `📆 距离本月结束还有 ${daysLeft} 天`;
             }
 
-            // 渲染节假日列表
             function renderFestivals() {
                 const listContainer = document.getElementById('festivalList');
                 listContainer.innerHTML = '';
-
-                festivals.forEach(festival => {
-                    const festivalDate = new Date(today.getFullYear(), festival.month - 1, festival.day);
-                    const todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-                    
-                    const displayName = festival.name;
-                    const shortName = festival.name.replace("2026年", "");
-
+                let isInLegalHoliday = false;
+                festivals.forEach(holiday => {
+                    const holidayStart = new Date(todayYear, holiday.startM - 1, holiday.startD);
+                    const holidayEnd = new Date(todayYear, holiday.endM - 1, holiday.endD);
+                    const shortName = holiday.name.replace("2026年", "").replace("假期", "");
+                    const isTodayInThisHoliday = todayDateObj >= holidayStart && todayDateObj <= holidayEnd;
                     let daysText = "";
                     let statusClass = "";
-
-                    if (festivalDate > todayDate) {
-                        const daysLeft = getDaysDiff(today, festivalDate);
+                    if (todayDateObj < holidayStart) {
+                        const daysLeft = getDaysDiff(today, holidayStart);
                         daysText = `还有 ${daysLeft} 天`;
                         statusClass = "not-yet";
-                    } else if (festivalDate.toDateString() === todayDate.toDateString()) {
-                        daysText = `今天是${shortName}！祝你开心🎇`;
+                    } else if (isTodayInThisHoliday) {
+                        daysText = `正在${shortName}假期中 ✨`;
                         statusClass = "today";
+                        isInLegalHoliday = true;
                     } else {
-                        daysText = `${shortName}已过，开心最重要啦`;
+                        daysText = `${shortName}假期已结束`;
                         statusClass = "passed";
                     }
-
                     const listItem = document.createElement('li');
-                    listItem.innerHTML = `
-                        <span class="name">${festival.emoji} ${displayName}</span>
-                        <span class="days ${statusClass}">${daysText}</span>
-                    `;
+                    listItem.innerHTML = `<span class="name">${holiday.emoji} ${holiday.name}</span><span class="days ${statusClass}">${daysText}</span>`;
                     listContainer.appendChild(listItem);
                 });
+                if(isInLegalHoliday) {
+                    setTimeout(() => { startFireworksEffect(); }, 300);
+                }
             }
 
-            // 执行渲染
-            renderCurrentDate();
-            renderYearEndTip();
-            renderWeekendTip();
-            renderMonthEndTip();
-            renderFestivals();
+            function startFireworksEffect() {
+                const layer = document.getElementById('fireworks-layer');
+                const canvas = document.getElementById('fireworks-canvas');
+                const ctx = canvas.getContext('2d');
+                const fireworks = [];
+                const particles = [];
+                const duration = 5000;
+                let startTime = Date.now();
+                function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+                resizeCanvas();
+                window.addEventListener('resize', resizeCanvas);
+                layer.style.visibility = 'visible';
+                layer.style.opacity = '1';
+                function randomColor() {
+                    const lightHighTransColors = [
+                        'rgba(220, 180, 255, 0.85)','rgba(180, 220, 255, 0.85)','rgba(180, 255, 220, 0.85)',
+                        'rgba(255, 220, 180, 0.85)','rgba(255, 180, 220, 0.85)','rgba(220, 255, 180, 0.85)'
+                    ];
+                    return lightHighTransColors[Math.floor(Math.random() * lightHighTransColors.length)];
+                }
+                class Firework {
+                    constructor() {
+                        this.x = Math.random() * canvas.width * 0.8 + canvas.width * 0.1;this.y = canvas.height;this.targetY = Math.random() * canvas.height * 0.2 + 120;
+                        this.color = randomColor();this.speed = Math.random() * 3 + 4;this.gravity = 0.03;this.velocityY = -this.speed;
+                        this.velocityX = (Math.random() - 0.5) * 0.5;this.isExploded = false;this.explodePower = Math.random() * 3 + 4;
+                    }
+                    update() {this.velocityY += this.gravity;this.y += this.velocityY;this.x += this.velocityX;if (this.y <= this.targetY && !this.isExploded) {this.explode();this.isExploded = true;}}
+                    draw() {if(!this.isExploded) {ctx.beginPath();ctx.moveTo(this.x, this.y + 10);ctx.lineTo(this.x, this.y - 10);ctx.strokeStyle = this.color;ctx.lineWidth = 1.2;ctx.stroke();}}
+                    explode() {const particleCount = Math.floor(Math.random() * 20 + 30);for (let i = 0; i < particleCount; i++) {const isLine = Math.random() > 0.5;particles.push(new Particle(this.x, this.y, this.color, this.explodePower, isLine));}}
+                }
+                class Particle {
+                    constructor(x, y, color, power, isLine) {
+                        this.x = x;this.y = y;this.color = color;this.angle = Math.random() * Math.PI * 2;this.speed = Math.random() * power + 1;
+                        this.gravity = 0.025;this.velocityX = Math.cos(this.angle) * this.speed;this.velocityY = Math.sin(this.angle) * this.speed;
+                        this.alpha = 0.95;this.decay = Math.random() * 0.006 + 0.007;this.isLine = isLine;this.length = Math.random() * 8 + 5;
+                    }
+                    update() {this.velocityY += this.gravity;this.x += this.velocityX;this.y += this.velocityY;this.velocityX *= 0.985;this.velocityY *= 0.985;this.alpha -= this.decay;}
+                    draw() {
+                        ctx.globalAlpha = this.alpha;ctx.strokeStyle = this.color;ctx.fillStyle = this.color;
+                        if(this.isLine) {ctx.beginPath();ctx.moveTo(this.x, this.y);ctx.lineTo(this.x - this.velocityX * 2, this.y - this.velocityY * 2);ctx.lineWidth = 1;ctx.stroke();}
+                        else {ctx.beginPath();ctx.rect(this.x, this.y, 1.2, 1.2);ctx.fill();}
+                        ctx.globalAlpha = 1;
+                    }
+                }
+                function animate() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    if (Math.random() < 0.06 && fireworks.length < 6) fireworks.push(new Firework());
+                    for (let i = fireworks.length - 1; i >= 0; i--) {const firework = fireworks[i];firework.update();firework.draw();if (firework.isExploded) fireworks.splice(i, 1);}
+                    for (let i = particles.length - 1; i >= 0; i--) {const particle = particles[i];particle.update();particle.draw();if (particle.alpha <= 0) particles.splice(i, 1);}
+                    if (Date.now() - startTime < duration) requestAnimationFrame(animate);
+                    else {layer.style.opacity = '0';setTimeout(() => {layer.style.visibility = 'hidden';ctx.clearRect(0,0,canvas.width,canvas.height);fireworks.length=0;particles.length=0;}, 600);}
+                }
+                animate();
+            }
         }
     </script>
 </body>
