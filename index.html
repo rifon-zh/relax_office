@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>摸鱼办2026节假日倒计时</title>
+    <title>休息办2026节假日倒计时</title>
     <style>
         * {margin:0;padding:0;box-sizing:border-box;font-family:"Microsoft YaHei",sans-serif;}
         body {background:#f5f7fa;padding:20px;}
@@ -89,7 +89,7 @@
 
         function renderWeekendTip() {
             const weekday = today.getDay();
-            let tipText = weekday === 6 ? "✨ 今天就是周六，已开启放假模式🎉" : weekday === 0 ? "✨ 今天是周日，继续快乐放假✨" : `✨ 距离本周六放假还有 ${6 - weekday} 天`;
+            let tipText = weekday === 6 ? "✨ 今天周六，开启放假模式🎉" : weekday === 0 ? "✨ 今天是周日，继续快乐放假✨" : `✨ 距离本周六放假还有 ${6 - weekday} 天`;
             document.getElementById('weekendTip').innerText = tipText;
         }
 
@@ -104,7 +104,7 @@
             listEl.innerHTML = '';
             festivals.forEach(fes => {
                 const festivalDate = new Date(today.getFullYear(), fes.month - 1, fes.day);
-                let daysText = festivalDate > today ? `还有 ${getDaysDiff(today, festivalDate)} 天` : (festivalDate.toDateString() === today.toDateString() ? "今天就是节日！🎇" : `已经渡过了愉快的${fes.name}`);
+                let daysText = festivalDate > today ? `还有 ${getDaysDiff(today, festivalDate)} 天` : (festivalDate.toDateString() === today.toDateString() ? "今天就是节日！要开心啊🎇" : `已经渡过${fes.name}`，开不开心都过去吧);
                 let cssClass = festivalDate > today ? "not-yet" : (festivalDate.toDateString() === today.toDateString() ? "today" : "passed");
                 const li = document.createElement('li');
                 li.innerHTML = `<span class="name">${fes.emoji} ${fes.name}</span><span class="days ${cssClass}">${daysText}</span>`;
@@ -121,4 +121,5 @@
     </script>
 </body>
 </html>
+
     
