@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>摸鱼办2026节假日倒计时</title>
+    <style>
+        * {margin:0;padding:0;box-sizing:border-box;font-family:"Microsoft YaHei",sans-serif;}
+        body {background:#f5f7fa;padding:20px;}
+        .container {max-width:600px;margin:0 auto;background:#fff;padding:30px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,0.1);}
+        .link-section {text-align:center;margin-bottom:20px;padding:15px;background:#e8f4f8;border-radius:10px;border:1px solid #4299e1;}
+        .link-title {font-size:16px;color:#2d3748;margin-bottom:10px;}
+        .link-btn {display:inline-block;padding:8px 20px;background:#4299e1;color:white;text-decoration:none;border-radius:6px;font-size:15px;cursor:pointer;margin:0 5px;}
+        .link-btn:hover {background:#3182ce;}
+        .link-copy {background:#48bb78;}
+        .link-copy:hover {background:#38a169;}
+        .link-text {margin-top:10px;font-size:14px;color:#718096;word-break:break-all;}
+        .header {text-align:center;margin-bottom:20px;padding-bottom:15px;border-bottom:2px solid #f0f0f0;}
+        .header h1 {color:#e63946;font-size:24px;margin-bottom:5px;}
+        .header .date {color:#666;font-size:14px;}
+        .reminder {margin:20px 0;}
+        .reminder h2 {color:#2a9d8f;font-size:18px;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+        .reminder .item {padding:10px;background:#f8f9fa;border-radius:8px;margin-bottom:8px;font-size:16px;color:#333;}
+        .festivals {margin:20px 0;}
+        .festivals h2 {color:#e9c46a;font-size:18px;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+        .festival-list {list-style:none;}
+        .festival-list li {padding:10px;background:#f8f9fa;border-radius:8px;margin-bottom:6px;font-size:15px;color:#333;display:flex;justify-content:space-between;}
+        .festival-list li .name {font-weight:500;}
+        .festival-list li .days {font-weight:bold;}
+        .days.not-yet {color:#e63946;}
+        .days.today {color:#2a9d8f;}
+        .days.passed {color:#666;}
+        .tips {margin-top:20px;padding:15px;background:#fff8e1;border-radius:8px;text-align:center;color:#ff9800;font-size:14px;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="link-section">
+            <div class="link-title">🔗 本页面公开链接（可直接分享）</div>
+            <div class="link-text" id="publicLink">部署后这里会显示你的网页链接</div>
+        </div>
+        <div class="header">
+            <h1>🐟 摸鱼办 重要通知 🐟</h1>
+            <div class="date" id="currentDate"></div>
+        </div>
+        <div class="reminder">
+            <h2>📅 近期时间提醒</h2>
+            <div class="item" id="weekendTip"></div>
+            <div class="item" id="monthEndTip"></div>
+        </div>
+        <div class="festivals">
+            <h2>🎊 2026年节假日倒计时</h2>
+            <ul class="festival-list" id="festivalList"></ul>
+        </div>
+        <div class="tips">
+            摸鱼办温馨提示：合理摸鱼，高效打工，节日就在前方，坚持就是胜利😜
+        </div>
+    </div>
+
+    <script>
+        // 复制链接功能
+        function copyLink() {
+            const linkText = document.getElementById('publicLink').innerText;
+            navigator.clipboard.writeText(linkText).then(() => {
+                alert('✅ 网页链接复制成功！');
+            }).catch(() => {
+                const textArea = document.createElement('textarea');
+                textArea.value = linkText;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('✅ 网页链接复制成功！');
+            });
+        }
+
+        // 动态日期/倒计时逻辑
+        const festivals = [{name:"2026年元旦",month:1,day:1,emoji:"🎆"},{name:"2026年春节（除夕）",month:2,day:17,emoji:"🧧"},{name:"2026年清明节",month:4,day:5,emoji:"🌿"},{name:"2026年劳动节",month:5,day:1,emoji:"🏗️"},{name:"2026年端午节",month:6,day:19,emoji:"🍙"},{name:"2026年中秋节",month:9,day:25,emoji:"🥮"},{name:"2026年国庆节",month:10,day:1,emoji:"🇨🇳"}];
+        const today = new Date();
+        
+        function getDaysDiff(date1, date2) {
+            const oneDay = 24 * 60 * 60 * 1000;
+            return Math.floor(Math.abs(date1 - date2) / oneDay);
+        }
+
+        function renderCurrentDate() {
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            document.getElementById('currentDate').innerText = `今日日期：${year}年${month}月${day}日`;
+        }
+
+        function renderWeekendTip() {
+            const weekday = today.getDay();
+            let tipText = weekday === 6 ? "✨ 今天就是周六，已开启放假模式🎉" : weekday === 0 ? "✨ 今天是周日，继续快乐放假✨" : `✨ 距离本周六放假还有 ${6 - weekday} 天`;
+            document.getElementById('weekendTip').innerText = tipText;
+        }
+
+        function renderMonthEndTip() {
+            const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+            const daysLeft = getDaysDiff(today, new Date(today.getFullYear(), today.getMonth(), lastDay));
+            document.getElementById('monthEndTip').innerText = `📆 距离本月结束还有 ${daysLeft} 天`;
+        }
+
+        function renderFestivals() {
+            const listEl = document.getElementById('festivalList');
+            listEl.innerHTML = '';
+            festivals.forEach(fes => {
+                const festivalDate = new Date(today.getFullYear(), fes.month - 1, fes.day);
+                let daysText = festivalDate > today ? `还有 ${getDaysDiff(today, festivalDate)} 天` : (festivalDate.toDateString() === today.toDateString() ? "今天就是节日！🎇" : `已经渡过了愉快的${fes.name}`);
+                let cssClass = festivalDate > today ? "not-yet" : (festivalDate.toDateString() === today.toDateString() ? "today" : "passed");
+                const li = document.createElement('li');
+                li.innerHTML = `<span class="name">${fes.emoji} ${fes.name}</span><span class="days ${cssClass}">${daysText}</span>`;
+                listEl.appendChild(li);
+            });
+        }
+
+        window.onload = function() {
+            renderCurrentDate();
+            renderWeekendTip();
+            renderMonthEndTip();
+            renderFestivals();
+        }
+    </script>
+</body>
+</html>
+    
