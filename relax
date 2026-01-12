@@ -36,12 +36,8 @@
 </head>
 <body>
     <div class="container">
-        <div class="link-section">
-            <div class="link-title">🔗 本页面公开链接（可直接分享）</div>
-            <div class="link-text" id="publicLink">部署后这里会显示你的网页链接</div>
-        </div>
         <div class="header">
-            <h1>🐟 摸鱼办 重要通知 🐟</h1>
+            <h1>🐟 休息办 重要通知 🐟</h1>
             <div class="date" id="currentDate"></div>
         </div>
         <div class="reminder">
@@ -54,7 +50,7 @@
             <ul class="festival-list" id="festivalList"></ul>
         </div>
         <div class="tips">
-            摸鱼办温馨提示：合理摸鱼，高效打工，节日就在前方，坚持就是胜利😜
+            休息办温馨提示：合理休息，高效打工，节日就在前方，坚持就是胜利😜
         </div>
     </div>
 
@@ -76,7 +72,7 @@
         }
 
         // 动态日期/倒计时逻辑
-        const festivals = [{name:"2026年元旦",month:1,day:1,emoji:"🎆"},{name:"2026年春节（除夕）",month:2,day:17,emoji:"🧧"},{name:"2026年清明节",month:4,day:5,emoji:"🌿"},{name:"2026年劳动节",month:5,day:1,emoji:"🏗️"},{name:"2026年端午节",month:6,day:19,emoji:"🍙"},{name:"2026年中秋节",month:9,day:25,emoji:"🥮"},{name:"2026年国庆节",month:10,day:1,emoji:"🇨🇳"}];
+        const festivals = [{name:"2026年元旦",month:1,day:1,emoji:"🎆"},{name:"2026年春节（除夕）",month:2,day:17,emoji:"🧧"},{name:"2026年清明节",month:4,day:5,emoji:"🌿"},{name:"2026年劳动节",month:5,day:1,emoji:"🏗️"},{name:"2026年端午节",month:6,day:19,emoji:"🍙"},{name:"2026年中秋节",month:9,day:25,emoji:"🥮"},{name:"2026年国庆节",month:10,day:1,emoji:"🚩"}];
         const today = new Date();
         
         function getDaysDiff(date1, date2) {
