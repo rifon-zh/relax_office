@@ -59,6 +59,30 @@
             margin-bottom:8px;
             font-size:16px;
             color:#333;
+            position: relative;  /* 新增：为logo定位做准备 */
+        }
+        
+        /* 发工资提醒项的特殊样式 */
+        .salary-item {
+            position: relative;  /* 为logo定位做准备 */
+        }
+        .salary-logo {
+            position: absolute;
+            right: 10px;
+            bottom: 5px;
+            font-size: 20px;
+            opacity: 0.4;  /* 透明度调整为40% */
+        }
+        
+        /* 新增：发工资数字呼吸动画 */
+        .salary-num {
+            display: inline-block;
+            padding: 0 4px;
+            font-weight: bold;
+            color: #e63946;
+        }
+        .breathe-animation {
+            animation: breathe 4s ease-in-out infinite;
         }
         
         /* 节假日列表模块 完全原版 */
@@ -107,6 +131,12 @@
             .container { padding: 15px !important; max-width: 100% !important; }
             .festival-list li { align-items: center; flex-wrap: wrap; gap: 6px; }
             * { box-sizing: border-box; }
+            /* 手机端调整logo位置 */
+            .salary-logo {
+                right: 8px;
+                bottom: 3px;
+                font-size: 18px;
+            }
         }
 
         /* ===== 彩虹动画：只对 .happy-quote 生效 ===== */
@@ -119,6 +149,13 @@
             71% { color: #9b5de5; } /* 靛 */
             85% { color: #f15bb5; } /* 紫 */
             100% { color: #e63946; } /* 回到红 */
+        }
+        
+        /* ===== 新增：呼吸动画 ===== */
+        @keyframes breathe {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.3); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
         }
     </style>
 </head>
@@ -137,6 +174,16 @@
             <h2>📅 近期时间提醒</h2>
             <div class="item" id="weekendTip"></div>
             <div class="item" id="monthEndTip"></div>
+            <!-- 新增发工资提醒 -->
+            <div class="item salary-item" id="salaryTip">
+                <span id="salaryText"></span>
+                <span id="salaryNumBox">
+                    <span class="salary-num breathe-animation" id="salaryCount"></span>
+                    </span>
+                    <span class="count-text">天</span>
+                </span>
+                <span class="salary-logo">💰</span>
+            </div>
         </div>
 
         <!-- 2026节假日倒计时 -->
@@ -156,7 +203,11 @@
         window.onload = function() {
             // 节假日数据
             const festivals = [{name:"2026年元旦",month:1,day:1,emoji:"🎆"},{name:"2026年春节",month:2,day:15,emoji:"🧧"},{name:"2026年清明节",month:4,day:4,emoji:"🌿"},{name:"2026年劳动节",month:5,day:1,emoji:"🏗️"},{name:"2026年端午节",month:6,day:19,emoji:"🍙"},{name:"2026年中秋节",month:9,day:25,emoji:"🥮"},{name:"2026年国庆节",month:10,day:1,emoji:"🚩"}];
-            const today = new Date();
+            const todayDateObj = new Date();
+            const todayYear = todayDateObj.getFullYear();
+            const todayMonth = todayDateObj.getMonth();
+            const todayDate = todayDateObj.getDate();
+            const today = todayDateObj;
 
             // ✅ 内置【100条】精选开心摸鱼语录
             const happyQuotes = [
@@ -286,6 +337,35 @@
                 return Math.floor(Math.abs(d1 - d2) / oneDayMs);
             }
 
+            // 获取指定年月第N个工作日的日期
+            function getNthWorkday(year, month, n) {
+                let count = 0;
+                let date = 1;
+                let currentDate = new Date(year, month, date);
+                
+                // 找到当月第一天
+                while (count < n) {
+                    currentDate = new Date(year, month, date);
+                    const dayOfWeek = currentDate.getDay();
+                    
+                    // 判断是否为工作日（周一到周五）
+                    if (dayOfWeek >= 1 && dayOfWeek <= 5) {
+                        count++;
+                        if (count === n) {
+                            return currentDate;
+                        }
+                    }
+                    date++;
+                }
+                
+                return currentDate;
+            }
+
+            // 获取本月第7个工作日（发薪日）
+            function getSalaryDate(year, month) {
+                return getNthWorkday(year, month, 7);
+            }
+
             // 渲染当前日期
             function renderCurrentDate() {
                 const year = today.getFullYear();
@@ -315,6 +395,63 @@
                 const lastDate = new Date(today.getFullYear(), today.getMonth(), lastDayOfMonth);
                 const daysLeft = getDaysDiff(today, lastDate);
                 document.getElementById('monthEndTip').innerText = `📆 距离本月结束还有 ${daysLeft} 天`;
+            }
+
+            // 渲染发工资倒计时（按照您的新要求）
+            function renderSalaryTip() {
+                const currentYear = todayYear;
+                const currentMonth = todayMonth;
+                const currentDay = todayDate;
+                
+                // 获取本月发薪日（第7个工作日）
+                const salaryDate = getSalaryDate(currentYear, currentMonth);
+                const daysLeft = getDaysDiff(todayDateObj, salaryDate);
+                const textEl = document.getElementById('salaryText');
+                const countEl = document.getElementById('salaryCount');
+                const numBox = document.getElementById('salaryNumBox');
+                
+                // 判断是否已经过了本月的发薪日
+                const isSalaryDayPassed = todayDateObj > salaryDate;
+                const isTodaySalaryDay = todayDateObj.toDateString() === salaryDate.toDateString();
+                
+                if (isTodaySalaryDay) {
+                    // 情况1：今天就是发工资日
+                    textEl.innerText = `🎉 今天发工资啦！开心暴富 🎉`;
+                    countEl.innerText = "";
+                } else if (isSalaryDayPassed) {
+                    // 情况2：本月工资已发，计算下个月的发薪日
+                    let nextMonth = currentMonth + 1;
+                    let nextYear = currentYear;
+                    
+                    if (nextMonth > 11) {
+                        nextMonth = 0;
+                        nextYear++;
+                    }
+                    
+                    const nextSalaryDate = getSalaryDate(nextYear, nextMonth);
+                    const daysToNextSalary = getDaysDiff(todayDateObj, nextSalaryDate);
+                    
+                    textEl.innerText = `💵 距离下月发工资还有 `;
+                    countEl.innerText = daysToNextSalary;
+                    
+                    // 呼吸动画定时器
+                    setInterval(() => {
+                        numBox.classList.remove('breathe-animation');
+                        void numBox.offsetWidth; // 触发重绘
+                        numBox.classList.add('breathe-animation');
+                    }, 4000);
+                } else {
+                    // 情况3：本月工资未发
+                    textEl.innerText = `💵 距离本月发工资还有 `;
+                    countEl.innerText = daysLeft;
+                    
+                    // 呼吸动画定时器
+                    setInterval(() => {
+                        numBox.classList.remove('breathe-animation');
+                        void numBox.offsetWidth; // 触发重绘
+                        numBox.classList.add('breathe-animation');
+                    }, 4000);
+                }
             }
 
             // 渲染节假日倒计时列表 文案完全不变
@@ -364,6 +501,7 @@
             renderCurrentDate();
             renderWeekendTip();
             renderMonthEndTip();
+            renderSalaryTip();
             renderFestivals();
             showHappyQuote();
         }
